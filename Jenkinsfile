@@ -1,29 +1,30 @@
-node('built-in')
+node('built-in') 
 {
-   stage('ContionousDownload')
-   {
-    git 'https://github.com/intelliqittrainings/maven.git'
-   }
-   
-   stage('ContionousBuild')
-   {
-    sh 'mvn package'
-   }
-   
-   stage('ContionousDownload')
-   {
-    deploy adapters: [tomcat9(credentialsId: 'tomcat-server', path: '', url: 'http://172.31.31.174:8080')], contextPath: 'teatapp', war: '**/*.war'
-   }
-   
-   stage('ContionousTesting')
-   {
-    git 'https://github.com/intelliqittrainings/FunctionalTesting.git'
-    sh 'java -jar /root/.jenkins/workspace/ScriptedPipeline/testing.jar'
-   }
-   
-   stage('ContionousDelivery')
-   {
-    input id: 'Srinivas', message: 'Get approval from Delivery Manager'   
-    deploy adapters: [tomcat9(credentialsId: 'tomcat-server', path: '', url: 'http://172.31.23.99:8080')], contextPath: 'prodapp', war: '**/*.war'
-   }
+    stage('ContinuousDownload') 
+    {
+          git 'https://github.com/krishnain/newmaven1.git'
+    }
+    stage('ContinuousBuild') 
+    {
+          sh 'mvn package'
+    }
+    
+    stage('ContinuousDeployment') 
+    {
+          sh label: 'Jenkinsfile', script: 'scp /root/.jenkins/workspace/scripted/webapp/target/webapp.war ubuntu@172.31.31.174:/var/lib/tomcat9/webapps/tapp.war'
+    }
+    
+    stage('ContinuousTesting') 
+    {
+          git 'https://github.com/intelliqittrainings/FunctionalTesting.git'
+          sh 'java -jar /root/.jenkins/workspace/scripted/testing.jar'
+          
+          
+    }
+    
+    stage('ContinuousDelivery') 
+    {
+          input id: 'Srinivas', message: 'Take approval from delivery Manager'
+          sh label: 'Jenkinsfile', script: 'scp /root/.jenkins/workspace/scripted/webapp/target/webapp.war ubuntu@172.31.23.99:/var/lib/tomcat9/webapps/papp.war'
+    }
 }
