@@ -18,9 +18,7 @@ node('built-in')
     {
           git 'https://github.com/intelliqittrainings/FunctionalTesting.git'
           sh 'java -jar /root/.jenkins/workspace/scripted/testing.jar'
-          
-          
-    }
+     }
     
     stage('ContinuousDelivery') 
     {
