@@ -14,7 +14,7 @@ node('built-in')
           sh label: 'Jenkinsfile', script: 'scp /root/.jenkins/workspace/scripted/webapp/target/webapp.war ubuntu@172.31.31.174:/var/lib/tomcat9/webapps/tapp.war'
     }
     
-    stage('ContinuousTesting') 
+    stage('ContinuousTest') 
     {
           git 'https://github.com/intelliqittrainings/FunctionalTesting.git'
           sh 'java -jar /root/.jenkins/workspace/scripted/testing.jar'
